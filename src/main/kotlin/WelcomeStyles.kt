@@ -11,7 +11,6 @@ object WelcomeStyles : StyleSheet("WelcomeStyles", isStatic = true) {
 
     val textInput by css {
         margin(vertical = 5.px)
-
         fontSize = 14.px
     }
 } 
