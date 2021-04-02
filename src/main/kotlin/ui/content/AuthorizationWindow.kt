@@ -1,21 +1,35 @@
 package ui.content
 
 import kotlinx.html.*
+import kotlinx.html.js.onChangeFunction
+import org.w3c.dom.HTMLElement
+import org.w3c.dom.HTMLInputElement
 import org.w3c.dom.events.Event
 import react.*
 import styled.*
 
 
-data class AuthorizationState(val registration: Boolean) : RState
+data class AuthorizationState(
+    var username: String,
+    var password: String
+    ) : RState
 
 class AuthorizationWindow(props: RProps) : RComponent<RProps, AuthorizationState>(props) {
 
-    init {
-        state = AuthorizationState(false)
+    private fun onUsernameChange(event: Event) {
+        val target = (event.target as? HTMLInputElement)
+        val value = target?.value ?: ""
+        setState {
+            username = value
+        }
     }
 
-    fun handleSubmit(event: Event) {
-
+    private fun onPasswordChange(event: Event) {
+        val target = (event.target as? HTMLInputElement)
+        val value = target?.value ?: ""
+        setState {
+            password = value
+        }
     }
 
     override fun RBuilder.render() {
@@ -24,7 +38,7 @@ class AuthorizationWindow(props: RProps) : RComponent<RProps, AuthorizationState
             styledDiv {
                 css.classes = mutableListOf("row")
                 styledDiv {
-                    css.classes = mutableListOf("col-md-offset-3 col-md-6 row-md-offset-3 row-md-3")
+                    css.classes = mutableListOf("col-md-offset-3 col-md-6")
                     styledForm {
                         css.classes = mutableListOf("form-horizontal")
                         styledSpan {
@@ -37,6 +51,9 @@ class AuthorizationWindow(props: RProps) : RComponent<RProps, AuthorizationState
                                 css.classes = mutableListOf("form-control")
                                 attrs.id = "inputUsername"
                                 attrs.placeholder = "Username"
+                                attrs.onChangeFunction = { event ->
+                                    onUsernameChange(event)
+                                }
                             }
                             styledI {
                                 css.classes = mutableListOf("fa fa-user")
@@ -48,6 +65,9 @@ class AuthorizationWindow(props: RProps) : RComponent<RProps, AuthorizationState
                                 css.classes = mutableListOf("form-control")
                                 attrs.id = "inputPassword"
                                 attrs.placeholder = "Password"
+                                attrs.onChangeFunction = { event ->
+                                    onPasswordChange(event)
+                                }
                             }
                             styledI {
                                 css.classes = mutableListOf("fa fa-lock")
