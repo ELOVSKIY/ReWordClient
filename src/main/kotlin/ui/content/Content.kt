@@ -5,7 +5,6 @@ import react.*
 class Content(props: RProps): RComponent<RProps, RState>(props) {
     override fun RBuilder.render() {
         authorization {
-
         }
     }
 }

@@ -6,13 +6,15 @@ import org.w3c.dom.HTMLElement
 import org.w3c.dom.HTMLInputElement
 import org.w3c.dom.events.Event
 import react.*
+import react.dom.form
+import react.dom.h1
+import react.dom.label
 import styled.*
-
 
 data class AuthorizationState(
     var username: String,
     var password: String
-    ) : RState
+) : RState
 
 class AuthorizationWindow(props: RProps) : RComponent<RProps, AuthorizationState>(props) {
 
@@ -34,54 +36,58 @@ class AuthorizationWindow(props: RProps) : RComponent<RProps, AuthorizationState
 
     override fun RBuilder.render() {
         styledDiv {
-            css.classes = mutableListOf("container")
+            css.classes = mutableListOf("auth-form px-3")
             styledDiv {
-                css.classes = mutableListOf("row")
-                styledDiv {
-                    css.classes = mutableListOf("col-md-offset-3 col-md-6")
-                    styledForm {
-                        css.classes = mutableListOf("form-horizontal")
-                        styledSpan {
-                            css.classes = mutableListOf("heading")
-                            +"Авторизация"
+                css.classes = mutableListOf("auth-form-header p-0")
+                h1 {
+                    +"Sign in to ReWord"
+                }
+            }
+            styledDiv {
+                css.classes = mutableListOf("auth-form-body mt-3")
+                form {
+                    attrs {
+                        action = "/session"
+                        acceptCharset = "UTF-8"
+                        method = FormMethod.post
+                    }
+                    label {
+                        attrs.htmlFor = "login_field"
+                        +"Username"
+                    }
+                    styledInput {
+                        css.classes = mutableListOf("form-control input-block")
+                        attrs {
+                            type = InputType.text
                         }
-                        styledDiv {
-                            css.classes = mutableListOf("form-group")
-                            styledInput(type = InputType.text) {
-                                css.classes = mutableListOf("form-control")
-                                attrs.id = "inputUsername"
-                                attrs.placeholder = "Username"
-                                attrs.onChangeFunction = { event ->
-                                    onUsernameChange(event)
-                                }
-                            }
-                            styledI {
-                                css.classes = mutableListOf("fa fa-user")
+                    }
+                    styledDiv {
+                        css.classes = mutableListOf("position-relative")
+                        label {
+                            attrs.htmlFor = "password"
+                            +"Password"
+                        }
+                        styledInput {
+                            css.classes = mutableListOf("form-control input-block")
+                            attrs {
+                                type = InputType.password
+                                name = "password"
+                                id = "password"
                             }
                         }
-                        styledDiv {
-                            css.classes = mutableListOf("form-group help")
-                            styledInput(type = InputType.password) {
-                                css.classes = mutableListOf("form-control")
-                                attrs.id = "inputPassword"
-                                attrs.placeholder = "Password"
-                                attrs.onChangeFunction = { event ->
-                                    onPasswordChange(event)
-                                }
-                            }
-                            styledI {
-                                css.classes = mutableListOf("fa fa-lock")
-                            }
-                        }
-                        styledDiv {
-                            css.classes = mutableListOf("form-group")
-                            styledButton(type = ButtonType.submit) {
-                                css.classes = mutableListOf("btn btn-default")
-                                +"Войти"
+                        styledInput {
+                            css.classes = mutableListOf("btn btn-primary btn-block")
+                            attrs {
+                                type = InputType.submit
+                                name = "commit"
+                                value = "Sign in"
                             }
                         }
                     }
                 }
+            }
+            styledP {
+                css.classes = mutableListOf("login-callout mt-3")
             }
         }
     }
