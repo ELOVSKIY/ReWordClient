@@ -48,3 +48,17 @@
     transition: .2s cubic-bezier(.3,0,.5,1);
     transition-property: color,background-color,border-color;
 }
+
+.Header {
+    z-index: 32;
+    padding-top: 12px;
+    padding-bottom: 12px;
+    color: var(--color-header-text);
+    background-color: var(--color-header-bg)
+}
+
+.Header-link {
+    font-weight: 600;
+    color: var(--color-header-logo);
+    white-space: nowrap;
+}

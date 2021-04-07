@@ -48,9 +48,9 @@ class AuthorizationWindow(props: RProps) : RComponent<RProps, AuthorizationState
                 form {
                     attrs {
                         action = "/session"
-                        acceptCharset = "UTF-8"
                         method = FormMethod.post
                     }
+                    attrs["acceptCharset"] = "UTF-8"
                     label {
                         attrs.htmlFor = "login_field"
                         +"Username"

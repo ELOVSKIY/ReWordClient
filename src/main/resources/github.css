@@ -8783,7 +8783,7 @@ body.page-responsive .flash-full .container {
 }
 
 @media print {
-    #serverstats,.comment:after,.comment:before,.discussion-timeline-actions,.file-actions,.footer,.gh-header-sticky,.Header,.header,.Header-old,.header-search,.js-expandable-line,.language-color,.lock-toggle-link,.pagehead-actions,.pr-review-tools,.pr-toolbar.is-placeholder,.reponav,.thread-subscription-status,.timeline-comment-actions,.timeline-new-comment,.toolbar-shadow {
+    #serverstats,.comment:after,.comment:before,.discussion-timeline-actions,.file-actions,.footer,.gh-header-sticky,.Header,.Header,.Header-old,.header-search,.js-expandable-line,.language-color,.lock-toggle-link,.pagehead-actions,.pr-review-tools,.pr-toolbar.is-placeholder,.reponav,.thread-subscription-status,.timeline-comment-actions,.timeline-new-comment,.toolbar-shadow {
         display: none!important
     }
 
