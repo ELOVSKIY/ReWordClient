@@ -1,8 +1,11 @@
 package ui.content
 
+import api.async
+import api.authorization
 import kotlinx.html.*
 import kotlinx.html.js.onChangeFunction
-import org.w3c.dom.HTMLElement
+import kotlinx.html.js.onClickFunction
+import model.User
 import org.w3c.dom.HTMLInputElement
 import org.w3c.dom.events.Event
 import react.*
@@ -16,7 +19,11 @@ data class AuthorizationState(
     var password: String
 ) : RState
 
-class AuthorizationWindow(props: RProps) : RComponent<RProps, AuthorizationState>(props) {
+data class AuthorizationProps(
+    var userAssigned: (User) -> Unit = {}
+): RProps
+
+class AuthorizationWindow(props: AuthorizationProps) : RComponent<AuthorizationProps, AuthorizationState>(props) {
 
     private fun onUsernameChange(event: Event) {
         val target = (event.target as? HTMLInputElement)
@@ -34,6 +41,15 @@ class AuthorizationWindow(props: RProps) : RComponent<RProps, AuthorizationState
         }
     }
 
+    private fun authorization() {
+        async {
+            val user = authorization(state.username, state.password)
+            props.userAssigned(user)
+        }.catch {
+            console.log(it.message)
+        }
+    }
+
     override fun RBuilder.render() {
         styledDiv {
             css.classes = mutableListOf("auth-form px-3")
@@ -46,10 +62,6 @@ class AuthorizationWindow(props: RProps) : RComponent<RProps, AuthorizationState
             styledDiv {
                 css.classes = mutableListOf("auth-form-body mt-3")
                 form {
-                    attrs {
-                        action = "/session"
-                        method = FormMethod.post
-                    }
                     attrs["acceptCharset"] = "UTF-8"
                     label {
                         attrs.htmlFor = "login_field"
@@ -59,6 +71,9 @@ class AuthorizationWindow(props: RProps) : RComponent<RProps, AuthorizationState
                         css.classes = mutableListOf("form-control input-block")
                         attrs {
                             type = InputType.text
+                            onChangeFunction =  {
+                                onUsernameChange(it)
+                            }
                         }
                     }
                     styledDiv {
@@ -73,27 +88,29 @@ class AuthorizationWindow(props: RProps) : RComponent<RProps, AuthorizationState
                                 type = InputType.password
                                 name = "password"
                                 id = "password"
+                                onChangeFunction = {
+                                    onPasswordChange(it)
+                                }
                             }
                         }
-                        styledInput {
+                        styledButton {
                             css.classes = mutableListOf("btn btn-primary btn-block")
                             attrs {
-                                type = InputType.submit
                                 name = "commit"
-                                value = "Sign in"
+                                onClickFunction = {
+                                    authorization()
+                                }
                             }
+                            +"Sign in"
                         }
                     }
                 }
-            }
-            styledP {
-                css.classes = mutableListOf("login-callout mt-3")
             }
         }
     }
 }
 
-fun RBuilder.authorization(handler: RProps.() -> Unit): ReactElement {
+fun RBuilder.authorization(handler: AuthorizationProps.() -> Unit): ReactElement {
     return child(AuthorizationWindow::class) {
         this.attrs(handler)
     }

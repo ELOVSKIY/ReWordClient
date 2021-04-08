@@ -1,0 +1,7 @@
+POST http://localhost:8082/authorization
+Content-Type: application/json
+
+{
+   "username" : "username1",
+   "password" : "1234"
+}
