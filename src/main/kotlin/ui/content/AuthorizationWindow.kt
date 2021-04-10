@@ -61,7 +61,7 @@ class AuthorizationWindow(props: AuthorizationProps) : RComponent<AuthorizationP
             }
             styledDiv {
                 css.classes = mutableListOf("auth-form-body mt-3")
-                form {
+                styledDiv {
                     attrs["acceptCharset"] = "UTF-8"
                     label {
                         attrs.htmlFor = "login_field"

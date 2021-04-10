@@ -1,33 +1,67 @@
 package ui.header
 
+import kotlinx.html.js.onClickFunction
 import react.*
-import react.dom.header
-import styled.styledDiv
-import styled.styledHeader
-import styled.styledNav
-import styled.styledSpan
+import styled.*
 
-val navigations = hashMapOf(
+val navigations = mutableListOf(
     NavigationType.LEARN to "LEARN",
     NavigationType.CATEGORIES to "CATEGORIES",
     NavigationType.STATISTICS to "STATISTICS",
     NavigationType.SETTINGS to "SETTINGS"
 )
 
-class Header(props: RProps) : RComponent<RProps, RState>(props) {
+data class HeaderState(var navigationType: NavigationType) : RState
+
+data class HeaderProps(var navigationItemSelected: (NavigationType) -> Unit) : RProps
+
+class Header(props: HeaderProps) : RComponent<HeaderProps, HeaderState>(props) {
+
+    init {
+         setState {
+             navigationType = NavigationType.LEARN
+         }
+    }
+
+    private fun onSelectNavItem(navigation: NavigationType) {
+        setState {
+            navigationType = navigation
+        }
+        props.navigationItemSelected(navigation)
+    }
+
     override fun RBuilder.render() {
         styledHeader {
-            css.classes =
-                mutableListOf("Header Details px-3 px-md-4 px-lg-5 flex-wrap flex-md-nowrap")
-            styledDiv {
-                css.classes = mutableListOf("Header-item Header-item--full flex-justify-center d-md-none position-relative")
-                styledNav {
-                    css.classes = mutableListOf("d-flex flex-column flex-md-row flex-self-stretch flex-md-self-auto")
-                    for (items in navigations) {
-                        styledSpan {
-                            css.classes = mutableListOf("js-selected-navigation-item Header-link mt-md-n3 mb-md-n3 py-2" +
-                                    " py-md-3 mr-0 mr-md-3 border-top border-md-top-0 border-white-fade-15")
-                            +"Settings"
+            css.classes = mutableListOf("d-flex flex-column h-100")
+            styledNav {
+                css.classes = mutableListOf("navbar navbar-expand-md navbar-dark fixed-top bg-dark")
+                styledDiv {
+                    css.classes = mutableListOf("container-fluid")
+                    styledSpan {
+                        css.classes = mutableListOf("navbar-brand")
+                        +"ReWord"
+                    }
+                    styledDiv {
+                        css.classes = mutableListOf("collapse navbar-collapse")
+                        styledUl {
+                            css.classes = mutableListOf("navbar-nav me-auto mb-2 mb-md-0")
+                            for (navigation in navigations) {
+                                styledLi {
+                                    css.classes = mutableListOf("nav-item")
+                                    styledA {
+                                        val classes = mutableListOf("nav-link")
+                                        if (navigation.first == state.navigationType) {
+                                            classes += "active"
+                                        }
+                                        css.classes = classes
+                                        attrs.onClickFunction = {
+                                            onSelectNavItem(navigation.first)
+                                        }
+                                        +navigation.second
+                                    }
+
+                                }
+                            }
                         }
                     }
                 }
@@ -36,7 +70,7 @@ class Header(props: RProps) : RComponent<RProps, RState>(props) {
     }
 }
 
-fun RBuilder.header(handler: RProps.() -> Unit): ReactElement {
+fun RBuilder.header(handler: HeaderProps.() -> Unit): ReactElement {
     return child(Header::class) {
         this.attrs(handler)
     }

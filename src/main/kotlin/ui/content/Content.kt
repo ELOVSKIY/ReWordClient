@@ -1,10 +1,28 @@
 package ui.content
 
 import react.*
+import styled.styledDiv
+import ui.header.NavigationType
 
-class Content(props: RProps): RComponent<RProps, RState>(props) {
+data class ContentState(var navigationType: NavigationType) : RState
+
+class Content(props: RProps): RComponent<RProps, ContentState>(props) {
     override fun RBuilder.render() {
-        authorization {
+        styledDiv {
+//        when(state.navigationType) {
+////            NavigationType.LEARN -> {
+////                +"LEARN"
+////            }
+//            NavigationType.CATEGORIES -> {
+////                +"CATEGORIES"
+//            }
+//            NavigationType.STATISTICS -> {
+////                +"STATISTICS"
+//            }
+//            NavigationType.SETTINGS -> {
+////                +"SETTINGS"
+//            }
+//        }
         }
     }
 }
