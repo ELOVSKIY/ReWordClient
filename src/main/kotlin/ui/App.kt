@@ -14,14 +14,19 @@ data class AppState(
 ) : RState
 
 class App(props: RProps) : RComponent<RProps, AppState>(props) {
+
+    init {
+        state = AppState(null, NavigationType.LEARN)
+    }
     override fun RBuilder.render() {
         //TODO commnet for debug
 //        if (state.currentUser != null) {
             header {
+                activeNavigationType = state.navigation
                 navigationItemSelected = this@App::navigationItemSelected
             }
             content {
-
+                activeNavigationType = state.navigation
             }
             footer {
 

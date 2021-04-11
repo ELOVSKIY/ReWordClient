@@ -11,22 +11,14 @@ val navigations = mutableListOf(
     NavigationType.SETTINGS to "SETTINGS"
 )
 
-data class HeaderState(var navigationType: NavigationType) : RState
+data class HeaderProps(
+    var activeNavigationType: NavigationType,
+    var navigationItemSelected: (NavigationType) -> Unit
+) : RProps
 
-data class HeaderProps(var navigationItemSelected: (NavigationType) -> Unit) : RProps
-
-class Header(props: HeaderProps) : RComponent<HeaderProps, HeaderState>(props) {
-
-    init {
-         setState {
-             navigationType = NavigationType.LEARN
-         }
-    }
+class Header(props: HeaderProps) : RComponent<HeaderProps, RState>(props) {
 
     private fun onSelectNavItem(navigation: NavigationType) {
-        setState {
-            navigationType = navigation
-        }
         props.navigationItemSelected(navigation)
     }
 
@@ -50,7 +42,7 @@ class Header(props: HeaderProps) : RComponent<HeaderProps, HeaderState>(props) {
                                     css.classes = mutableListOf("nav-item")
                                     styledA {
                                         val classes = mutableListOf("nav-link")
-                                        if (navigation.first == state.navigationType) {
+                                        if (navigation.first == props.activeNavigationType) {
                                             classes += "active"
                                         }
                                         css.classes = classes
