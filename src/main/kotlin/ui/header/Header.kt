@@ -1,5 +1,9 @@
 package ui.header
 
+import kotlinx.css.CSSBuilder
+import kotlinx.css.RuleSet
+import kotlinx.html.ButtonType
+import kotlinx.html.id
 import kotlinx.html.js.onClickFunction
 import react.*
 import styled.*
@@ -33,8 +37,24 @@ class Header(props: HeaderProps) : RComponent<HeaderProps, RState>(props) {
                         css.classes = mutableListOf("navbar-brand")
                         +"ReWord"
                     }
+                    styledButton {
+                        css.classes = mutableListOf("navbar-toggler")
+                        attrs {
+                            type = ButtonType.button
+                        }
+                        attrs["data-bs-toggle"] = "collapse"
+                        attrs["data-bs-target"] = "#navbarCollapse"
+                        attrs["aria-controls"] = "navbarCollapse"
+                        attrs["aria-expanded"] = "true"
+                        attrs["aria-label"] = "Toggle navigation"
+                        styledSpan {
+                            css.classes = mutableListOf("navbar-toggler-icon")
+                        }
+                    }
                     styledDiv {
                         css.classes = mutableListOf("collapse navbar-collapse")
+                        attrs.id = "navbarCollapse"
+                        
                         styledUl {
                             css.classes = mutableListOf("navbar-nav me-auto mb-2 mb-md-0")
                             for (navigation in navigations) {
