@@ -28,7 +28,7 @@ class Header(props: HeaderProps) : RComponent<HeaderProps, RState>(props) {
 
     override fun RBuilder.render() {
         styledHeader {
-            css.classes = mutableListOf("d-flex flex-column h-100")
+            css.classes = mutableListOf("d-flex px-3 flex-column h-100")
             styledNav {
                 css.classes = mutableListOf("navbar navbar-expand-md navbar-dark fixed-top bg-dark")
                 styledDiv {

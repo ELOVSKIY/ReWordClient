@@ -2,7 +2,7 @@ package ui
 
 import model.User
 import react.*
-import ui.content.authorization
+import ui.authorization.authorization
 import ui.content.content
 import ui.footer.footer
 import ui.header.NavigationType

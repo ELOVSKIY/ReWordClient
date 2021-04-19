@@ -9,8 +9,6 @@ import model.User
 import org.w3c.dom.url.URLSearchParams
 import kotlin.js.json
 
-private const val HOST = "http://localhost:8082"
-
 suspend fun <T> postAndParseResult(url: String, body: dynamic, parse: (dynamic) -> T): T =
     requestAndParseResult("POST", url, body, parse)
 
@@ -30,24 +28,6 @@ suspend fun <T> requestAndParseResult(method: String, url: String, body: dynamic
     }).await()
     console.log(response)
     return parse(response.json().await())
-}
-
-suspend fun authorization(username: String, password: String) : User{
-    val json = json(
-        "username" to username,
-        "password" to password
-    )
-    val body = JSON.stringify(json)
-    return postAndParseResult("$HOST/authorization", body, ::parseLoginOrRegisterResponse)
-}
-
-
-private fun parseLoginOrRegisterResponse(json: dynamic): User {
-    if (json.error != null) {
-        throw (json.error)
-    }
-
-    return User(json.user.username, json.user.password)
 }
 
 class LoginOrRegisterFailedException(message: String) : Throwable(message)

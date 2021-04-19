@@ -1,4 +1,4 @@
-package ui.content
+package ui.authorization
 
 import api.async
 import api.authorization
@@ -9,7 +9,6 @@ import model.User
 import org.w3c.dom.HTMLInputElement
 import org.w3c.dom.events.Event
 import react.*
-import react.dom.form
 import react.dom.h1
 import react.dom.label
 import styled.*

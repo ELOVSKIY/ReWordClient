@@ -1,14 +1,78 @@
 package api
 
-import kotlinx.browser.window
+import model.Category
 import model.User
-import org.w3c.dom.url.URL
+import model.Word
+import kotlin.js.json
 
-private const val HOST = "localhost:8081"
+private const val HOST = "http://localhost:8082"
 
-object Api {
+suspend fun authorization(username: String, password: String) : User{
+    val json = json(
+        "username" to username,
+        "password" to password
+    )
+    val body = JSON.stringify(json)
+    return postAndParseResult("$HOST/authorization", body, ::parseLoginOrRegisterResponse)
+}
 
-    fun authorization(user: User) {
+suspend fun notifyCorrectAnswer(wordId: Int) {
+    val json = json(
+        "wordId" to wordId
+    )
+    val body = JSON.stringify(json)
+    postAndParseResult("$HOST/success", body, ::parseEmptyResponse)
+}
 
+suspend fun notifyIncorrectAnswer(wordId: Int) {
+    val json = json(
+        "wordId" to wordId
+    )
+    val body = JSON.stringify(json)
+    postAndParseResult("$HOST/failure", body, ::parseEmptyResponse)
+}
+
+suspend fun fetchWordToLearn() : List<Word> {
+    return mutableListOf(
+        Word(1, "a", "a", "a"),
+        Word(2, "b", "b", "b")
+    )
+}
+
+suspend fun fetchCategories(): MutableList<Category> {
+    return mutableListOf(
+        Category("Films", "https://www.flaticon.com/svg/vstatic/svg/1077/1077340.svg?token=exp=1618745828~hmac=ec807739ee239d5df1a7d750e5c43fa0"),
+        Category("Films", "https://www.flaticon.com/svg/vstatic/svg/1077/1077340.svg?token=exp=1618745828~hmac=ec807739ee239d5df1a7d750e5c43fa0"),
+        Category("Films", "https://www.flaticon.com/svg/vstatic/svg/1077/1077340.svg?token=exp=1618745828~hmac=ec807739ee239d5df1a7d750e5c43fa0"),
+        Category("Films", "https://www.flaticon.com/svg/vstatic/svg/1077/1077340.svg?token=exp=1618745828~hmac=ec807739ee239d5df1a7d750e5c43fa0"),
+        Category("Films", "https://www.flaticon.com/svg/vstatic/svg/1077/1077340.svg?token=exp=1618745828~hmac=ec807739ee239d5df1a7d750e5c43fa0"),
+        Category("Films", "https://www.flaticon.com/svg/vstatic/svg/1077/1077340.svg?token=exp=1618745828~hmac=ec807739ee239d5df1a7d750e5c43fa0"),
+        Category("Films", "https://www.flaticon.com/svg/vstatic/svg/1077/1077340.svg?token=exp=1618745828~hmac=ec807739ee239d5df1a7d750e5c43fa0"),
+        Category("Films", "https://www.flaticon.com/svg/vstatic/svg/1077/1077340.svg?token=exp=1618745828~hmac=ec807739ee239d5df1a7d750e5c43fa0"),
+        Category("Films", "https://www.flaticon.com/svg/vstatic/svg/1077/1077340.svg?token=exp=1618745828~hmac=ec807739ee239d5df1a7d750e5c43fa0"),
+        Category("Films", "https://www.flaticon.com/svg/vstatic/svg/1077/1077340.svg?token=exp=1618745828~hmac=ec807739ee239d5df1a7d750e5c43fa0"),
+        Category("Films", "https://www.flaticon.com/svg/vstatic/svg/1077/1077340.svg?token=exp=1618745828~hmac=ec807739ee239d5df1a7d750e5c43fa0")
+    )
+}
+
+private fun parseWordResponse(json: dynamic) : List<Word> {
+    val words = mutableListOf<Word>()
+    for (jsonWord in json.words) {
+        val word = Word(jsonWord.id, jsonWord.word, jsonWord.transcription, jsonWord.translation)
+        words.add(word)
     }
+
+    return words
+}
+
+private fun parseLoginOrRegisterResponse(json: dynamic): User {
+    if (json.error != null) {
+        throw (json.error)
+    }
+
+    return User(json.user.username, json.user.password)
+}
+
+private fun parseEmptyResponse(json: dynamic): Unit {
+
 }

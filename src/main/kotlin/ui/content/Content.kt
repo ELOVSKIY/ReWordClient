@@ -1,33 +1,78 @@
 package ui.content
 
+import api.async
+import api.fetchWordToLearn
+import model.Word
 import react.*
 import styled.styledDiv
 import styled.styledH1
 import ui.header.NavigationType
 
+private const val MIN_WORDS_COUNT_TO_LOAD = 3
+
 data class ContentProps(var activeNavigationType: NavigationType) : RProps
 
-class Content(props: ContentProps) : RComponent<ContentProps, RState>(props) {
+data class ContentState(var words: MutableList<Word>) : RState
+
+class Content(props: ContentProps) : RComponent<ContentProps, ContentState>(props) {
+
+    init {
+        state = ContentState(mutableListOf())
+    }
+
     override fun RBuilder.render() {
+        loadWords()
         styledDiv {
-            styledH1 {
-                css.classes = mutableListOf("mt-5")
-                when (props.activeNavigationType) {
-                    NavigationType.LEARN -> {
-                        +"LEARN"
+            css.classes = mutableListOf("mt-5")
+            when (props.activeNavigationType) {
+                NavigationType.LEARN -> {
+                    learn {
+                        words = state.words
+                        onAnswer = {
+                            onLearnAnswer()
+                        }
                     }
-                    NavigationType.CATEGORIES -> {
-                        +"CATEGORIES"
+                }
+                NavigationType.CATEGORIES -> {
+                    categories {
+
                     }
-                    NavigationType.STATISTICS -> {
+                }
+                NavigationType.STATISTICS -> {
+                    styledH1 {
                         +"STATISTICS"
                     }
-                    NavigationType.SETTINGS -> {
+                }
+                NavigationType.SETTINGS -> {
+                    styledH1 {
                         +"SETTINGS"
                     }
                 }
-
             }
+        }
+    }
+
+    private fun onLearnAnswer() {
+        val stateWords = state.words
+        stateWords.removeAt(0)
+        setState {
+            words = stateWords
+        }
+        if (stateWords.size <= MIN_WORDS_COUNT_TO_LOAD) {
+//            loadWords()
+        }
+    }
+
+    private fun loadWords() {
+        async {
+            val fetchedWords = fetchWordToLearn()
+            val stateWords = state.words
+            stateWords.addAll(fetchedWords)
+            setState {
+                words = stateWords
+            }
+        }.catch {
+            console.log(it.message)
         }
     }
 }
