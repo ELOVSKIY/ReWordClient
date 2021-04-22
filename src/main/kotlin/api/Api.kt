@@ -5,7 +5,7 @@ import model.User
 import model.Word
 import kotlin.js.json
 
-private const val HOST = "http://localhost:8082"
+private const val HOST = "http://localhost:8083"
 
 suspend fun authorization(username: String, password: String) : User{
     val json = json(
@@ -39,20 +39,22 @@ suspend fun fetchWordToLearn() : List<Word> {
     )
 }
 
-suspend fun fetchCategories(): MutableList<Category> {
-    return mutableListOf(
-        Category("Films", "https://www.flaticon.com/svg/vstatic/svg/1077/1077340.svg?token=exp=1618745828~hmac=ec807739ee239d5df1a7d750e5c43fa0"),
-        Category("Films", "https://www.flaticon.com/svg/vstatic/svg/1077/1077340.svg?token=exp=1618745828~hmac=ec807739ee239d5df1a7d750e5c43fa0"),
-        Category("Films", "https://www.flaticon.com/svg/vstatic/svg/1077/1077340.svg?token=exp=1618745828~hmac=ec807739ee239d5df1a7d750e5c43fa0"),
-        Category("Films", "https://www.flaticon.com/svg/vstatic/svg/1077/1077340.svg?token=exp=1618745828~hmac=ec807739ee239d5df1a7d750e5c43fa0"),
-        Category("Films", "https://www.flaticon.com/svg/vstatic/svg/1077/1077340.svg?token=exp=1618745828~hmac=ec807739ee239d5df1a7d750e5c43fa0"),
-        Category("Films", "https://www.flaticon.com/svg/vstatic/svg/1077/1077340.svg?token=exp=1618745828~hmac=ec807739ee239d5df1a7d750e5c43fa0"),
-        Category("Films", "https://www.flaticon.com/svg/vstatic/svg/1077/1077340.svg?token=exp=1618745828~hmac=ec807739ee239d5df1a7d750e5c43fa0"),
-        Category("Films", "https://www.flaticon.com/svg/vstatic/svg/1077/1077340.svg?token=exp=1618745828~hmac=ec807739ee239d5df1a7d750e5c43fa0"),
-        Category("Films", "https://www.flaticon.com/svg/vstatic/svg/1077/1077340.svg?token=exp=1618745828~hmac=ec807739ee239d5df1a7d750e5c43fa0"),
-        Category("Films", "https://www.flaticon.com/svg/vstatic/svg/1077/1077340.svg?token=exp=1618745828~hmac=ec807739ee239d5df1a7d750e5c43fa0"),
-        Category("Films", "https://www.flaticon.com/svg/vstatic/svg/1077/1077340.svg?token=exp=1618745828~hmac=ec807739ee239d5df1a7d750e5c43fa0")
-    )
+suspend fun fetchCategories(): List<Category> {
+//    return mutableListOf(
+//        Category("Films", "https://www.flaticon.com/svg/vstatic/svg/1077/1077340.svg?token=exp=1618745828~hmac=ec807739ee239d5df1a7d750e5c43fa0"),
+//        Category("Films", "https://www.flaticon.com/svg/vstatic/svg/1077/1077340.svg?token=exp=1618745828~hmac=ec807739ee239d5df1a7d750e5c43fa0"),
+//        Category("Films", "https://www.flaticon.com/svg/vstatic/svg/1077/1077340.svg?token=exp=1618745828~hmac=ec807739ee239d5df1a7d750e5c43fa0"),
+//        Category("Films", "https://www.flaticon.com/svg/vstatic/svg/1077/1077340.svg?token=exp=1618745828~hmac=ec807739ee239d5df1a7d750e5c43fa0"),
+//        Category("Films", "https://www.flaticon.com/svg/vstatic/svg/1077/1077340.svg?token=exp=1618745828~hmac=ec807739ee239d5df1a7d750e5c43fa0"),
+//        Category("Films", "https://www.flaticon.com/svg/vstatic/svg/1077/1077340.svg?token=exp=1618745828~hmac=ec807739ee239d5df1a7d750e5c43fa0"),
+//        Category("Films", "https://www.flaticon.com/svg/vstatic/svg/1077/1077340.svg?token=exp=1618745828~hmac=ec807739ee239d5df1a7d750e5c43fa0"),
+//        Category("Films", "https://www.flaticon.com/svg/vstatic/svg/1077/1077340.svg?token=exp=1618745828~hmac=ec807739ee239d5df1a7d750e5c43fa0"),
+//        Category("Films", "https://www.flaticon.com/svg/vstatic/svg/1077/1077340.svg?token=exp=1618745828~hmac=ec807739ee239d5df1a7d750e5c43fa0"),
+//        Category("Films", "https://www.flaticon.com/svg/vstatic/svg/1077/1077340.svg?token=exp=1618745828~hmac=ec807739ee239d5df1a7d750e5c43fa0"),
+//        Category("Films", "https://www.flaticon.com/svg/vstatic/svg/1077/1077340.svg?token=exp=1618745828~hmac=ec807739ee239d5df1a7d750e5c43fa0")
+//    )
+
+    return postAndParseResult(  "$HOST/categories", "", ::parseCategoriesResponse)
 }
 
 private fun parseWordResponse(json: dynamic) : List<Word> {
@@ -71,6 +73,14 @@ private fun parseLoginOrRegisterResponse(json: dynamic): User {
     }
 
     return User(json.user.username, json.user.password)
+}
+
+private fun parseCategoriesResponse(json: dynamic): List<Category> {
+    if (json.error != null) {
+        throw (json.error)
+    }
+
+    return mutableListOf()
 }
 
 private fun parseEmptyResponse(json: dynamic): Unit {

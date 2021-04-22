@@ -20,7 +20,7 @@ class App(props: RProps) : RComponent<RProps, AppState>(props) {
     }
     override fun RBuilder.render() {
         //TODO commnet for debug
-//        if (state.currentUser != null) {
+        if (state.currentUser != null) {
             header {
                 activeNavigationType = state.navigation
                 navigationItemSelected = this@App::navigationItemSelected
@@ -31,11 +31,11 @@ class App(props: RProps) : RComponent<RProps, AppState>(props) {
             footer {
 
             }
-//        } else {
-//            authorization {
-//                userAssigned = this@App::userAssigned
-//            }
-//        }
+        } else {
+            authorization {
+                userAssigned = this@App::userAssigned
+            }
+        }
     }
 
     private fun navigationItemSelected(selectedNavigationType: NavigationType) {

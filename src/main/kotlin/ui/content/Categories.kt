@@ -10,7 +10,7 @@ import styled.styledImg
 
 private const val COLUMNS_COUNT = 3
 
-data class CategoriesState(var categories: MutableList<Category>) : RState
+data class CategoriesState(var categories: List<Category>) : RState
 
 class Categories(props: RProps) : RComponent<RProps, CategoriesState>(props) {
 
@@ -75,7 +75,7 @@ class Categories(props: RProps) : RComponent<RProps, CategoriesState>(props) {
                 categories = fetchedCategories
             }
         }.catch {
-            console.log(it.message)
+            console.log(it)
         }
     }
 }

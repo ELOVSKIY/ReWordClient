@@ -18,10 +18,10 @@ class Content(props: ContentProps) : RComponent<ContentProps, ContentState>(prop
 
     init {
         state = ContentState(mutableListOf())
+//        loadWords()
     }
 
     override fun RBuilder.render() {
-        loadWords()
         styledDiv {
             css.classes = mutableListOf("mt-5")
             when (props.activeNavigationType) {
@@ -72,7 +72,7 @@ class Content(props: ContentProps) : RComponent<ContentProps, ContentState>(prop
                 words = stateWords
             }
         }.catch {
-            console.log(it.message)
+            console.log(it)
         }
     }
 }

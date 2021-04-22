@@ -45,7 +45,7 @@ class AuthorizationWindow(props: AuthorizationProps) : RComponent<AuthorizationP
             val user = authorization(state.username, state.password)
             props.userAssigned(user)
         }.catch {
-            console.log(it.message)
+//            console.log(it.message)
         }
     }
 
@@ -63,7 +63,7 @@ class AuthorizationWindow(props: AuthorizationProps) : RComponent<AuthorizationP
                 styledDiv {
                     attrs["acceptCharset"] = "UTF-8"
                     label {
-                        attrs.htmlFor = "login_field"
+//                        attrs.htmlFor = "login_field"
                         +"Username"
                     }
                     styledInput {
@@ -78,7 +78,7 @@ class AuthorizationWindow(props: AuthorizationProps) : RComponent<AuthorizationP
                     styledDiv {
                         css.classes = mutableListOf("position-relative")
                         label {
-                            attrs.htmlFor = "password"
+//                            attrs.htmlFor = "password"
                             +"Password"
                         }
                         styledInput {

@@ -1,9 +1,7 @@
 package ui.content
 
 import api.async
-import api.authorization
 import api.notifyCorrectAnswer
-import api.notifyIncorrectAnswer
 import kotlinx.html.InputType
 import kotlinx.html.js.onChangeFunction
 import kotlinx.html.js.onClickFunction
@@ -11,7 +9,6 @@ import model.Word
 import org.w3c.dom.HTMLInputElement
 import org.w3c.dom.events.Event
 import react.*
-import react.dom.style
 import styled.*
 
 private const val DEFAULT_RETRY_COUNT = 3
