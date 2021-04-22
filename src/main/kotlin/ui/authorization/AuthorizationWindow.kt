@@ -45,8 +45,13 @@ class AuthorizationWindow(props: AuthorizationProps) : RComponent<AuthorizationP
             val user = authorization(state.username, state.password)
             props.userAssigned(user)
         }.catch {
-//            console.log(it.message)
+            console.log(it.message)
         }
+    }
+
+    init {
+        //TODO call this method in start, and render after result
+        authorization()
     }
 
     override fun RBuilder.render() {
